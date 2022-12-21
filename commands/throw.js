@@ -1,19 +1,19 @@
 const { SlashCommandBuilder, MessageEmbed }  = require('discord.js');
 
 // Collect Embed
-const StatsEmbed = {
+const CollectSuccessEmbed = {
 	color: 0x0099ff,
 	title: 'Snowball Bot',
-	description: 'These are your stats:',
+	description: 'You have thrown a snowball!',
 	timestamp: new Date().toISOString(),
 };
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName("collect")
+    .setName("throw")
     .setDescription("Allows user to collect snowballs"),
     async execute(interaction) {
-        const msg = StatsEmbed;
+        const msg = CollectSuccessEmbed;
         return interaction.reply({ embeds: [msg] });
     }
 }
