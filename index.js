@@ -2,11 +2,11 @@
 // - Move to config.json, might making setup a lot easier.
 // - Dockerfile to automate setup
 
-require('dotenv').config();
+const {DISCORD_TOKEN, CLIENT_ID, GUILD_ID } = require("./config.json"); 
 const fs = require('node:fs');
 const path = require('node:path');
 const {Client, Events, Collection, GatewayIntentBits} = require('discord.js'); //import discord.js
-const token = process.env.DISCORD_TOKEN;
+const token = String(DISCORD_TOKEN);
 
 // Enable all intents, need to research more how to restrict this
 const client = new Client({intents: [GatewayIntentBits.Guilds]});

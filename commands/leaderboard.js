@@ -4,13 +4,7 @@ const { SlashCommandBuilder, MessageEmbed }  = require('discord.js');
 const LeaderboardEmbed = {
 	color: 0x0099ff,
 	title: 'Snowball Bot',
-	description: 'You have collected a snowball',
-    fields: [ {
-        value: '1. ',
-    }, 
-    {
-        value: '2. ',
-    } ],
+	description: 'Top Snowballers:\n1.\n2.\n3.',
 	timestamp: new Date().toISOString()
 };
 
@@ -19,6 +13,8 @@ module.exports = {
     .setName("leaderboard")
     .setDescription("Allows user to view the leaderboard"),
     async execute(interaction) {
+        // This is how you reset the description
+        // LeaderboardEmbed.description = "Hello";
         const msg = LeaderboardEmbed;
         return interaction.reply({ embeds: [msg] });
     }

@@ -1,19 +1,19 @@
 const { SlashCommandBuilder, MessageEmbed }  = require('discord.js');
 
-// Leaderboard Embed
-const LeaderboardEmbed = {
+// Collect Embed
+const StatsEmbed = {
 	color: 0x0099ff,
 	title: 'Snowball Bot',
-	description: 'You have collected a snowball',
+	description: 'These are your stats:',
 	timestamp: new Date().toISOString(),
 };
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName("leaderboard")
-    .setDescription("Allows user to view the leaderboard"),
+    .setName("stats")
+    .setDescription("Allows user to collect snowballs"),
     async execute(interaction) {
-        const msg = LeaderboardEmbed;
+        const msg = StatsEmbed;
         return interaction.reply({ embeds: [msg] });
     }
 }
