@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, MessageEmbed }  = require('discord.js');
+const { SlashCommandBuilder }  = require('discord.js');
 
 // Leaderboard Embed
 const CollectSuccessEmbed = {
