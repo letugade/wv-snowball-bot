@@ -1,3 +1,4 @@
+// TODO
 const { SlashCommandBuilder }  = require('discord.js');
 
 // Leaderboard Embed
@@ -12,7 +13,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName("leaderboard")
     .setDescription("Allows user to view the leaderboard"),
-    async execute(interaction) {
+    async execute(interaction, user, client) {
         // This is how you reset the description
         // LeaderboardEmbed.description = "Hello";
         const msg = LeaderboardEmbed;

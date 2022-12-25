@@ -2,17 +2,25 @@
 // - Move to config.json, might making setup a lot easier.
 // - Dockerfile to automate setup
 
-const {DISCORD_TOKEN, CLIENT_ID, GUILD_ID } = require("./config.json"); 
+const {DISCORD_TOKEN, CLIENT_ID, GUILD_ID, DATABASE_TOKEN } = require("./config.json");
 const fs = require('node:fs');
 const path = require('node:path');
-const {Client, Events, Collection, GatewayIntentBits} = require('discord.js'); //import discord.js
+const {Client, Events, Collection, GatewayIntentBits } = require('discord.js'); //import discord.js
+const { connect } = require('mongoose');
+
+const Stats = require(`./models/Stats`);
+
 const token = String(DISCORD_TOKEN);
+const databaseToken = String(DATABASE_TOKEN);
 
 // Enable all intents, need to research more how to restrict this
 const client = new Client({intents: [GatewayIntentBits.Guilds]});
 
 // Setup Commands
 client.commands = new Collection();
+
+// Setup client variables
+client.cooldowns = new Map();
 
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -38,13 +46,35 @@ client.on(Events.InteractionCreate, async interaction => {
 
     const command = client.commands.get(interaction.commandName);
 
+	console.log(interaction);
+
     if (!command) {
 		console.error(`No command matching ${interaction.commandName} was found.`);
 		return;
 	}
 
 	try {
-		await command.execute(interaction);
+		// Update db after command is called
+		var query = { user_id: interaction.user.id, guild_id: interaction.guildId },
+		update = {},
+		options = { upsert: true, new: true, setDefaultsOnInsert: true };
+		var user = await Stats.findOneAndUpdate(query, update, options);
+
+		// Special Case for throw
+		if (interaction.commandName === "throw") {
+			query = { user_id: interaction.options.getUser('target').id, guild_id: interaction.guildId },
+			update = {},
+			options = { upsert: true, new: true, setDefaultsOnInsert: true };
+			var target = await Stats.findOneAndUpdate(query, update, options);
+			await command.execute(interaction, user, target, client);
+			target.save();
+		} else {
+			await command.execute(interaction, user, client);
+		}
+
+		user.save();
+		console.log(user);
+
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
@@ -52,3 +82,9 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.login(token);
+connect(databaseToken);
+console.log("Database Connected");
+
+
+
+

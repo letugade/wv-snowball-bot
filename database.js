@@ -1,14 +1,15 @@
 // TODO: More Testing Required
 
-const { dbsettings } = require("./config.json");
+const { dbsettings, DATABASE_TOKEN} = require("./config.json");
 const { MongoClient } = require('mongodb');
+const {connect} = require("mongoose");
 
 async function listDatabases(client){
-    databasesList = await client.db().admin().listDatabases();
+    let databasesList = await client.db().admin().listDatabases();
  
     console.log("Databases:");
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-};
+}
 
 // TODO: Add more stats to this
 async function setUserStats(client, id, score) {
@@ -57,3 +58,10 @@ async function main() {
 }
 
 main().catch(console.error);
+connect(DATABASE_TOKEN).catch(console.err);
+
+run();
+
+async function run() {
+	const stats = await Stats.create({});
+}
