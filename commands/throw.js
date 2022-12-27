@@ -3,12 +3,27 @@
 const { SlashCommandBuilder}  = require('discord.js');
 
 // Throw Embed
-const ThrowEmbed = {
-	color: 0x0099ff,
+const ThrowSuccessEmbed = {
+	color: 0x61e765,
 	title: 'Snowball Bot',
 	description: 'You have thrown a snowball!',
+    image: {
+		url: 'https://raw.githubusercontent.com/letugade/wv-snowball-bot/main/images/throw.png',
+	},
 	timestamp: new Date().toISOString(),
 };
+
+// Throw Embed
+const ThrowFailEmbed = {
+	color: 0xfba617,
+	title: 'Snowball Bot',
+	description: 'You have thrown a snowball!',
+    image: {
+		url: 'https://raw.githubusercontent.com/letugade/wv-snowball-bot/main/images/dodge.png',
+	},
+	timestamp: new Date().toISOString(),
+};
+
 
 // Self Throw Embed
 const SelfThrowEmbed = {
@@ -33,13 +48,21 @@ module.exports = {
 
         // Make sure user can't throw snowballs at themselves
         if (commandTarget.id !== interaction.user.id) {
-            msg = ThrowEmbed;
+
+            const dodge = Math.round(Math.random());
             // Target gets Hit
-            user.hits += 1;
-            user.snowballs -= 1;
-            target.kos += 1;
-            client.cooldowns.set(commandTarget.id, { cooldownStart: Date.now(), cooldownDuration: 60});
-            msg.description = `You have thrown a snowball at ${commandTarget} and hit them!`;
+            if (dodge === 0) {
+                user.hits += 1;
+                user.snowballs -= 1;
+                target.kos += 1;
+                target.snowballs = 0;
+                client.cooldowns.set(commandTarget.id, { cooldownStart: Date.now(), cooldownDuration: 60});
+                msg = ThrowSuccessEmbed;
+                msg.description = `You have thrown a snowball at ${commandTarget} and hit them!`;
+            } else {
+                msg = ThrowFailEmbed;
+                msg.description = `You have thrown a snowball at ${commandTarget} and missed them!`;
+            }
         } else {
             msg = SelfThrowEmbed;
         }
