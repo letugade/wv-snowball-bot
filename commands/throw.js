@@ -9,8 +9,7 @@ const ThrowSuccessEmbed = {
 	description: 'You have thrown a snowball!',
     image: {
 		url: 'https://raw.githubusercontent.com/letugade/wv-snowball-bot/main/images/throw.png',
-	},
-	timestamp: new Date().toISOString(),
+	}
 };
 
 // Throw Embed
@@ -20,8 +19,7 @@ const ThrowFailEmbed = {
 	description: 'You have thrown a snowball!',
     image: {
 		url: 'https://raw.githubusercontent.com/letugade/wv-snowball-bot/main/images/dodge.png',
-	},
-	timestamp: new Date().toISOString(),
+	}
 };
 
 
@@ -30,7 +28,6 @@ const SelfThrowEmbed = {
 	color: 0x0099ff,
 	title: 'Snowball Bot',
 	description: 'You can\'t throw a snowball at yourself!',
-	timestamp: new Date().toISOString(),
 };
 
 module.exports = {
