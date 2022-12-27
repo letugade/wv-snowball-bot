@@ -58,10 +58,10 @@ module.exports = {
                 target.snowballs = 0;
                 client.cooldowns.set(commandTarget.id, { cooldownStart: Date.now(), cooldownDuration: 60});
                 msg = ThrowSuccessEmbed;
-                msg.description = `You have thrown a snowball at ${commandTarget} and hit them!`;
+                msg.description = `You have thrown a snowball at ${commandTarget} and hit them! You now have ${user.snowballs} snowballs.`;
             } else {
                 msg = ThrowFailEmbed;
-                msg.description = `You have thrown a snowball at ${commandTarget} and missed them!`;
+                msg.description = `You have thrown a snowball at ${commandTarget} and missed them! You now have ${user.snowballs} snowballs.`;
             }
         } else {
             msg = SelfThrowEmbed;

@@ -5,8 +5,7 @@ const StatsEmbed = {
 	color: 0x0099ff,
 	title: 'Snowball Bot',
 	description: 'These are your stats:',
-    fields: [],
-	timestamp: new Date().toISOString(),
+    fields: []
 };
 
 module.exports = {

@@ -2,16 +2,16 @@
 // - Move to config.json, might making setup a lot easier.
 // - Dockerfile to automate setup
 
-const {DISCORD_TOKEN, CLIENT_ID, GUILD_ID, DATABASE_TOKEN } = require("./config.json");
-const fs = require('node:fs');
-const path = require('node:path');
+const fs = require('fs');
+const path = require('path');
 const {Client, Events, Collection, GatewayIntentBits } = require('discord.js'); //import discord.js
 const { connect } = require('mongoose');
+require('dotenv').config();
 
 const Stats = require(`./models/Stats`);
 
-const token = String(DISCORD_TOKEN);
-const databaseToken = String(DATABASE_TOKEN);
+const token = String(process.env.DISCORD_TOKEN);
+const databaseToken = String(process.env.DATABASE_TOKEN);
 
 // Enable all intents, need to research more how to restrict this
 const client = new Client({intents: [GatewayIntentBits.Guilds]});

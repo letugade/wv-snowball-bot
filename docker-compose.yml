@@ -4,7 +4,7 @@ services:
 
   mongo:
     image: mongo
-    restart: always
+    restart: unless-stopped
     ports:
       - 27017:27017
     environment:
@@ -12,6 +12,16 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - "mongo_volume:/data/db"
+
+  bot:
+    depends_on:
+      - mongo
+    build:
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - "docker.env"
+
 
 volumes:
 

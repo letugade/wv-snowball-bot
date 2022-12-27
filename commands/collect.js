@@ -1,4 +1,5 @@
 // Mostly Done
+// - Snowball Count
 const { SlashCommandBuilder }  = require('discord.js');
 const {connect} = require("mongoose");
 const {DATABASE_TOKEN} = require("../config.json");
@@ -10,16 +11,14 @@ const CollectSuccessEmbed = {
 	description: 'You have collected a snowball',
     image: {
 		url: 'https://raw.githubusercontent.com/letugade/wv-snowball-bot/main/images/collect.png',
-	},
-	timestamp: new Date().toISOString()
+	}
 };
 
 // Collect Successful
 const CollectFailEmbed = {
 	color: 0x6062e3,
 	title: 'Snowball Bot',
-	description: `Please wait to collect a snowball`,
-	timestamp: new Date().toISOString()
+	description: `Please wait to collect a snowball`
 };
 
 module.exports = {
@@ -43,15 +42,17 @@ module.exports = {
             // Cooldown Check
             if (cooldownTime < cooldownDuration) {
                 msg = CollectFailEmbed;
-                msg.description = `Please wait ${cooldownDuration - cooldownTime} seconds to collect a snowball`;
+                msg.description = `Please wait ${cooldownDuration - cooldownTime} seconds to collect a snowball.`;
             } else {
                 msg = CollectSuccessEmbed;
                 user.snowballs += 1;
+                msg.description = `You have collected a snowball. You now have ${user.snowballs} snowballs.`;
                 cooldowns.set(userId, {cooldownStart: Date.now(), cooldownDuration: 30});
             }
         } else {
             msg = CollectSuccessEmbed;
             user.snowballs += 1;
+            msg.description = `You have collected a snowball. You now have ${user.snowballs} snowballs.`;
             cooldowns.set(userId, {cooldownStart: Date.now(), cooldownDuration: 30});
         }
 
