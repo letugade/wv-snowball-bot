@@ -2,7 +2,6 @@
 // - Snowball Count
 const { SlashCommandBuilder }  = require('discord.js');
 const {connect} = require("mongoose");
-const {DATABASE_TOKEN} = require("../config.json");
 
 // Collect Successful
 const CollectSuccessEmbed = {
