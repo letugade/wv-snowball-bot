@@ -1,12 +1,10 @@
 // Mostly Done
 // - Snowball Count
 const { SlashCommandBuilder }  = require('discord.js');
-const {connect} = require("mongoose");
 
 // Collect Successful
 const CollectSuccessEmbed = {
 	color: 0x6062e3,
-	title: 'Snowball Bot',
 	description: 'You have collected a snowball',
     image: {
 		url: 'https://raw.githubusercontent.com/letugade/wv-snowball-bot/main/images/collect.png',
@@ -16,7 +14,6 @@ const CollectSuccessEmbed = {
 // Collect Successful
 const CollectFailEmbed = {
 	color: 0x6062e3,
-	title: 'Snowball Bot',
 	description: `Please wait to collect a snowball`
 };
 

@@ -46,30 +46,39 @@ client.on(Events.InteractionCreate, async interaction => {
 
     const command = client.commands.get(interaction.commandName);
 
-	console.log(interaction);
+	// console.log(interaction);
 
     if (!command) {
 		console.error(`No command matching ${interaction.commandName} was found.`);
 		return;
 	}
 
-	try {
+try {
+		var query, update, options
+		var user, target
+
 		// Update db after command is called
-		var query = { user_id: interaction.user.id, guild_id: interaction.guildId },
+		query = { user_id: interaction.user.id, guild_id: interaction.guildId },
 		update = {},
 		options = { upsert: true, new: true, setDefaultsOnInsert: true };
-		var user = await Stats.findOneAndUpdate(query, update, options);
+		user = await Stats.findOneAndUpdate(query, update, options);
 
-		// Special Case for throw
-		if (interaction.commandName === "throw") {
-			query = { user_id: interaction.options.getUser('target').id, guild_id: interaction.guildId },
-			update = {},
-			options = { upsert: true, new: true, setDefaultsOnInsert: true };
-			var target = await Stats.findOneAndUpdate(query, update, options);
-			await command.execute(interaction, user, target, client);
-			target.save();
-		} else {
-			await command.execute(interaction, user, client);
+		switch (interaction.commandName) {
+			case "throw":
+				query = { user_id: interaction.options.getUser('target').id, guild_id: interaction.guildId },
+				update = {},
+				options = { upsert: true, new: true, setDefaultsOnInsert: true };
+				target = await Stats.findOneAndUpdate(query, update, options);
+				await command.execute(interaction, user, target, client);
+				target.save();
+				break;
+			case "leaderboard":
+				var users = await Stats.find({}).sort({hits: -1, kos: 1, misses: 1}).limit(10);
+				await command.execute(interaction, users, client);
+				break;
+			default:
+				await command.execute(interaction, user, client);
+				break;
 		}
 
 		user.save();
@@ -82,7 +91,7 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.login(token);
-connect(databaseToken);
+connect(databaseToken, {dbName: "snowballdb", autoCreate: true});
 console.log("Database Connected");
 
 

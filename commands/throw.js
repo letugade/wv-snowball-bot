@@ -5,7 +5,6 @@ const { SlashCommandBuilder}  = require('discord.js');
 // Throw Embed
 const ThrowSuccessEmbed = {
 	color: 0x61e765,
-	title: 'Snowball Bot',
 	description: 'You have thrown a snowball!',
     image: {
 		url: 'https://raw.githubusercontent.com/letugade/wv-snowball-bot/main/images/throw.png',
@@ -13,9 +12,14 @@ const ThrowSuccessEmbed = {
 };
 
 // Throw Embed
+const ThrowEmptyEmbed = {
+	color: 0x0099ff,
+	description: 'You have no more snowballs! Type /collect for more.'
+};
+
+// Throw Embed
 const ThrowFailEmbed = {
 	color: 0xfba617,
-	title: 'Snowball Bot',
 	description: 'You have thrown a snowball!',
     image: {
 		url: 'https://raw.githubusercontent.com/letugade/wv-snowball-bot/main/images/dodge.png',
@@ -26,8 +30,7 @@ const ThrowFailEmbed = {
 // Self Throw Embed
 const SelfThrowEmbed = {
 	color: 0x0099ff,
-	title: 'Snowball Bot',
-	description: 'You can\'t throw a snowball at yourself!',
+	description: 'You can\'t throw a snowball at yourself!'
 };
 
 module.exports = {
@@ -43,8 +46,11 @@ module.exports = {
         // Keep it local to make it easier
         let commandTarget = interaction.options.getUser('target');
 
+        if (user.snowballs <= 0) {
+            msg = ThrowEmptyEmbed;
+        }
         // Make sure user can't throw snowballs at themselves
-        if (commandTarget.id !== interaction.user.id) {
+        else if (commandTarget.id !== interaction.user.id) {
 
             const dodge = Math.round(Math.random());
             // Target gets Hit
@@ -58,6 +64,8 @@ module.exports = {
                 msg.description = `You have thrown a snowball at ${commandTarget} and hit them! You now have ${user.snowballs} snowballs.`;
             } else {
                 msg = ThrowFailEmbed;
+                user.snowballs -= 1;
+                user.misses += 1;
                 msg.description = `You have thrown a snowball at ${commandTarget} and missed them! You now have ${user.snowballs} snowballs.`;
             }
         } else {
