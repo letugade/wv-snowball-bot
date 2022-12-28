@@ -1,6 +1,5 @@
 // TODO
-// - Move to config.json, might making setup a lot easier.
-// - Dockerfile to automate setup
+// - Implement Database Lock
 
 const fs = require('fs');
 const path = require('path');
